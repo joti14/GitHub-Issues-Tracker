@@ -1,3 +1,5 @@
+let allIssues = [];
+
 const totalIssues = document.getElementById('total-issues');
 const issuesContainer = document.getElementById("issues-container");
 
@@ -32,11 +34,6 @@ const createElements = (arr) => {
     return htmlElements.join(" ");
 };
 
-const removeActive = () => {
-    const controlButtons = document.querySelectorAll('.control-btn');
-    controlButtons.forEach(btn => btn.classList.remove('active'));
-};
-
 const formatDate = ((isoString) => {
     const date = new Date(isoString);
     const month = date.getMonth() + 1;
@@ -50,21 +47,6 @@ const displayIssues = (issues) => {
     const issuesContainer = document.getElementById("issues-container");
     issuesContainer.innerHTML = "";
 
-    //     {
-    //     "id": 1,
-    //     "title": "Fix navigation menu on mobile devices",
-    //     "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
-    //     "status": "open",
-    //     "labels": [
-    //         "bug",
-    //         "help wanted"
-    //     ],
-    //     "priority": "high",
-    //     "author": "john_doe",
-    //     "assignee": "jane_smith",
-    //     "createdAt": "2024-01-15T10:30:00Z",
-    //     "updatedAt": "2024-01-15T10:30:00Z"
-    // }
     issues.forEach((issue) => {
         // console.log(issue);
         const card = document.createElement("div");
@@ -100,19 +82,39 @@ const displayIssues = (issues) => {
     updateIssues();
 };
 
+const removeActive = () => {
+    const controlButtons = document.querySelectorAll('.control-btn');
+    controlButtons.forEach(btn => btn.classList.remove('active'));
+};
+
+const filterIssueCards = (status) => {
+    removeActive();
+
+    let filteredIssues = [];
+    if(status === 'all') {
+        filteredIssues = allIssues;
+    } else if(status === 'open') {
+        filteredIssues = allIssues.filter(issue => issue.status === 'open')
+    } else if(status === 'closed') {
+        filteredIssues = allIssues.filter(issue => issue.status === 'closed')
+    }
+
+    displayIssues(filteredIssues);
+    document.getElementById(`${status}-btn`).classList.add('active');
+};
+
 const fetchIssues = async () => {
     const response = await fetch(
         "https://phi-lab-server.vercel.app/api/v1/lab/issues",
     );
-    removeActive();
     const data = await response.json();
-
-    // const allBtn = document.getElementById('all-btn');
-    // allBtn.classList.add('active')
-    // const openBtn = document.getElementById('open-btn');
-    displayIssues(data.data);
+    
+    allIssues = data.data;
+    filterIssueCards('all');
+    // displayIssues(data.data);
 }; 
 
 fetchIssues();
-const allBtn = document.getElementById("all-btn");
-allBtn.addEventListener("click", fetchIssues);
+document.getElementById("all-btn").addEventListener("click", () => filterIssueCards("all"));
+document.getElementById("open-btn").addEventListener("click", () => filterIssueCards("open"));
+document.getElementById("closed-btn").addEventListener("click", () => filterIssueCards("closed"));
