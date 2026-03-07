@@ -1,11 +1,9 @@
 document.getElementById('login-btn').addEventListener('click', () =>{
     const userNameInput = document.getElementById('username');
     const userName = userNameInput.value;
-    console.log(userName)
 
     const inputPassword = document.getElementById('password');
     const password = inputPassword.value;
-    console.log(password)
 
     if(userName == 'admin' && password == 'admin123') {
         alert('login successful');

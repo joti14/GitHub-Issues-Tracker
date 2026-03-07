@@ -1,11 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- title and logo -->
+    <title>GitHub Issues Tracker</title>
+    <link rel="shortcut icon" href="assets/github-logo.png" type="image/x-icon" />
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- font integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
+
+    <!-- tailwind + daisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet" href="styles.css " />
 </head>
+
 <body>
-    <h1>Home</h1>
+
+    <header>
+        <div class="navbar bg-base-100 shadow-sm">
+            <div class="flex-1">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                    <div class="w-10 rounded-full">
+                        <img alt="github-logo" src="assets/github-logo.png" />
+                    </div>
+                </div>
+                <a class="text-xl font-semibold">GitHub Issues Tracker</a>
+            </div>
+            <div class="flex gap-2">
+                <label class="input validator">
+                    <i class="fa-brands fa-sistrix text-[#64748B]"></i>
+                    <input type="text" placeholder="Search issues..." required />
+                </label>
+                <button class="btn btn-primary">+ New Issues</button>
+            </div>
+        </div>
+        </div>
+    </header>
+
+    <section class="bg-[#F8FAFC] w-11/12 mx-auto p-6 shadow-sm mt-20">
+        <div class="flex gap-5">
+            <button id="all-btn" class="btn btn-outline btn-primary px-8">All</button>
+            <button id="open-btn" class="btn btn-outline btn-primary px-8">Open</button>
+            <button id="closed-btn" class="btn btn-outline btn-primary px-8">Closed</button>
+        </div>
+    </section>
+
+    <section id="issues-container" class="bg-[#F8FAFC] w-11/12 mx-auto p-10 my-10 shadow-sm grid grid-cols-3 gap-5 items-stretch">
+        
+    </section>
+
+    <script src="./script/home.js"></script>
 </body>
+
 </html>
