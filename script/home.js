@@ -1,3 +1,12 @@
+const totalIssues = document.getElementById('total-issues');
+const issuesContainer = document.getElementById("issues-container");
+
+const updateIssues = () => {
+    totalIssues.innerHTML = `${issuesContainer.children.length} Issues`;
+    // console.log(totalIssues)
+};
+
+
 const getLabelIcon = (label) => {
     if (label === "bug") return "fa-solid fa-bug";
     if (label === "help wanted") return "fa-solid fa-life-ring";
@@ -23,6 +32,20 @@ const createElements = (arr) => {
     return htmlElements.join(" ");
 };
 
+const removeActive = () => {
+    const controlButtons = document.querySelectorAll('.control-btn');
+    controlButtons.forEach(btn => btn.classList.remove('active'));
+};
+
+const formatDate = ((isoString) => {
+    const date = new Date(isoString);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`
+});
+
+
 const displayIssues = (issues) => {
     const issuesContainer = document.getElementById("issues-container");
     issuesContainer.innerHTML = "";
@@ -43,15 +66,17 @@ const displayIssues = (issues) => {
     //     "updatedAt": "2024-01-15T10:30:00Z"
     // }
     issues.forEach((issue) => {
-        console.log(issue);
+        // console.log(issue);
         const card = document.createElement("div");
-        card.className = "card bg-base-100 shadow-sm p-5 flex flex-col";
+        card.className = `card bg-base-100 shadow-sm p-5 flex flex-col ${issue.status === 'open' ? 'border-t-4 border-green-500' : 'border-t-4 border-purple-500'}`;
+
+    
         card.innerHTML = `
         
-            <div class="flex flex-col gap-4 flex-1">
+            <div class="flex flex-col gap-4 flex-1 ">
                 <div class="flex justify-between items-center">
-                    <img src="assets/Open-Status.png" alt="">
-                    <span class="badge badge-error">${issue.priority}</span>
+                    ${issue.status === 'open' ? `<img src="assets/Open-Status.png" alt="Open Status">` : `<img src="assets/Closed-Status.png" alt="Close Status">`}
+                    <span class="badge ${issue.priority.toLowerCase() === 'high' ? 'badge-error' : issue.priority.toLowerCase() === 'medium' ? 'badge-warning' : 'badge-neutral'}">${issue.priority}</span>
                 </div>
                 <div>
                     <h1 class="text-xl font-semibold text-[#1F2937]">${issue.title}</h1>
@@ -65,21 +90,29 @@ const displayIssues = (issues) => {
             <div class="mt-4">
                 <hr class="border-gray-300 w-full mb-4">
                 <div class="text-[#64748B] text-sm">
-                    <p>${issue.author}</p>
-                    <p>${issue.createdAt}</p>
+                    <p>#${issue.id} ${issue.author}</p>
+                    <p>${formatDate(issue.createdAt)}</p>
                 </div>
             </div>
         `;
         issuesContainer.append(card);
     });
+    updateIssues();
 };
 
-const allBtn = document.getElementById("all-btn");
-
-allBtn.addEventListener("click", async () => {
+const fetchIssues = async () => {
     const response = await fetch(
         "https://phi-lab-server.vercel.app/api/v1/lab/issues",
     );
+    removeActive();
     const data = await response.json();
+
+    // const allBtn = document.getElementById('all-btn');
+    // allBtn.classList.add('active')
+    // const openBtn = document.getElementById('open-btn');
     displayIssues(data.data);
-});
+}; 
+
+fetchIssues();
+const allBtn = document.getElementById("all-btn");
+allBtn.addEventListener("click", fetchIssues);
