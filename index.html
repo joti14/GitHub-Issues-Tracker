@@ -1,30 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- title and logo -->
     <title>GitHub Issues Tracker</title>
-    <link rel="shortcut icon" href="assets/github-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/github-logo.png" type="image/x-icon" />
 
     <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- font integration -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
 
     <!-- tailwind + daisyUI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <link rel="stylesheet" href="styles.css ">
+    <link rel="stylesheet" href="styles.css " />
 </head>
-<body>
-    <h1>GitHub Issues Tracker</h1>
+
+<body class="min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full bg-white shadow-xl mx-auto text-center pt-10 rounded-xl">
+        <div>
+            <img class="mx-auto mb-6" src="assets/github-logo.png" alt="github-logo">
+            <h1 class="font-semibold text-2xl text-[#1F2937]">GitHub Issues Tracker</h1>
+            <p class="font-normal text-sm text-[#64748B]">Sign in to manage your issues</p>
+        </div>
+        <div class="form">
+            <div class="card w-full max-w-sm mx-auto">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <label class="label font-medium text-neutral-700">Username</label>
+                        <input id="username" type="text" class="input rounded-sm" placeholder="Enter Username" />
+                        <label class="label">
+                            <span class="label-text-alt text-primary mb-2">Default: admin</span>
+                        </label>
+
+                        <label class="label font-medium text-neutral-700">Password</label>
+                        <input id="password" type="password" class="input rounded-sm"
+                            placeholder="Enter Password" />
+                        <label class="label">
+                            <span class="label-text-alt text-primary">Default: admin123</span>
+                        </label>
+
+                        <button id="login-btn" class="btn btn-primary mt-4 rounded-sm">
+                            Sign In
+                        </button>
+                    </fieldset>
+                    <div class="divider text-[#1F2937]">OR</div>
+                    <div>
+                        <p class="text-[#64748B] font-normal mb-2">Demo Credentials:</p>
+                        <div class="bg-base-200 p-5 text-center rounded-md">
+                            <p class="text-[#1F2937] text-[16px]"><span
+                                    class="font-semibold text-[16px] text-[#1F2937]">Username: </span>admin</p>
+                            <p class="text-[#1F2937] text-[16px]"><span
+                                    class="font-semibold text-[16px] text-[#1F2937]">Password: </span>admin123</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./script/login.js"></script>
 </body>
+
 </html>
