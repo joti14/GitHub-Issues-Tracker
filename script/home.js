@@ -8,6 +8,17 @@ const updateIssues = () => {
     // console.log(totalIssues)
 };
 
+const manageSpinner = (status) => {
+    if(status == true) {
+        document.getElementById('spinner').classList.remove('hidden');
+        document.getElementById('issues-container').classList.add('hidden');
+    }
+    else {
+        document.getElementById('issues-container').classList.remove('hidden');
+        document.getElementById('spinner').classList.add('hidden');
+    }
+};
+
 
 const getLabelIcon = (label) => {
     if (label === "bug") return "fa-solid fa-bug";
@@ -138,6 +149,7 @@ const displayIssues = (issues) => {
         issuesContainer.append(card);
     });
     updateIssues();
+    manageSpinner(false);
 };
 
 const removeActive = () => {
@@ -146,6 +158,7 @@ const removeActive = () => {
 };
 
 const filterIssueCards = (status) => {
+    manageSpinner(true);
     // console.log(status)
     removeActive();
 
@@ -163,6 +176,7 @@ const filterIssueCards = (status) => {
 };
 
 const fetchIssues = async () => {
+    manageSpinner(true);
     const response = await fetch(
         "https://phi-lab-server.vercel.app/api/v1/lab/issues",
     );
