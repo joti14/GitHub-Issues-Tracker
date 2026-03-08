@@ -191,3 +191,25 @@ fetchIssues();
 document.getElementById("all-btn").addEventListener("click", () => filterIssueCards("all"));
 document.getElementById("open-btn").addEventListener("click", () => filterIssueCards("open"));
 document.getElementById("closed-btn").addEventListener("click", () => filterIssueCards("closed"));
+
+document.getElementById('btn-search').addEventListener('click', () => {
+    const input = document.getElementById('input-search');
+    const searchValue = input.value.trim().toLowerCase();
+    console.log(searchValue);
+
+    if(!searchValue){
+        alert('Search input is empty, showing all issues');
+        displayIssues(allIssues);
+        return;
+    };
+
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
+    .then(res => res.json())
+    .then(data => {
+        const allIssues = data.data;
+        console.log(allIssues)
+        const filterIssues = allIssues.filter((issue) => issue.title.toLowerCase().includes(searchValue));       
+        displayIssues(filterIssues);
+        updateIssues();
+    });
+});
