@@ -42,6 +42,63 @@ const formatDate = ((isoString) => {
     return `${month}/${day}/${year}`
 });
 
+const formatName = (name) => {
+    return name.split("_").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+};
+
+const loadIssueDetail = async(id) => {
+    const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayIssueDetail(details.data)
+};
+
+// {
+//     "id": 1,
+//     "title": "Fix navigation menu on mobile devices",
+//     "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
+//     "status": "open",
+//     "labels": [
+//         "bug",
+//         "help wanted"
+//     ],
+//     "priority": "high",
+//     "author": "john_doe",
+//     "assignee": "jane_smith",
+//     "createdAt": "2024-01-15T10:30:00Z",
+//     "updatedAt": "2024-01-15T10:30:00Z"
+// }
+
+const displayIssueDetail = (issue) => {
+    console.log(issue)
+    const detailsBox = document.getElementById('details-container');
+    detailsBox.innerHTML = `
+        <h2 class="text-2xl font-bold">${issue.title}</h2>
+                    <div class="flex items-center gap-2">
+                        <div class="badge badge-success text-white">${issue.status}</div>
+                        <span class="w-1 h-1 bg-[#64748B] rounded-full inline-block"></span>
+                        <p class="text-[#64748B] ">Opened by ${formatName(issue.assignee ? formatName(issue.assignee) : 'None')}</p>
+                        <span class="w-1 h-1 bg-[#64748B] rounded-full inline-block"></span>
+                        <p class="text-[#64748B]">${formatDate(issue.createdAt)}</p>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        ${createElements(issue.labels)}
+                    </div>
+                    <p class="text-[#64748B]">${issue.description}</p>
+                    <div class="flex gap-20 bg-base-200 p-5 rounded-md">
+                        <div>
+                            <p class="text-[#64748B] font-normal">Assignee:</p>
+                            <h3 class="text-[#1F2937] text-lg font-semibold">${formatName(issue.assignee) ? formatName(issue.assignee) : 'Not Assigned'}</h3>
+                        </div>
+                        <div>
+                            <p class="text-[#64748B] font-normal">Priority:</p>
+                            <span class="text-white badge ${issue.priority.toLowerCase() === 'high' ? 'badge-error' : issue.priority.toLowerCase() === 'medium' ? 'badge-warning' : 'badge-neutral'}">${issue.priority}</span>
+                        </div>
+                    </div>
+    
+    `;
+    document.getElementById('issue_modal').showModal();
+};
 
 const displayIssues = (issues) => {
     const issuesContainer = document.getElementById("issues-container");
@@ -54,7 +111,7 @@ const displayIssues = (issues) => {
 
     
         card.innerHTML = `
-        
+        <div onclick='loadIssueDetail(${issue.id})'>
             <div class="flex flex-col gap-4 flex-1 ">
                 <div class="flex justify-between items-center">
                     ${issue.status === 'open' ? `<img src="assets/Open-Status.png" alt="Open Status">` : `<img src="assets/Closed-Status.png" alt="Close Status">`}
@@ -76,6 +133,7 @@ const displayIssues = (issues) => {
                     <p>${formatDate(issue.createdAt)}</p>
                 </div>
             </div>
+        </div>
         `;
         issuesContainer.append(card);
     });
@@ -88,6 +146,7 @@ const removeActive = () => {
 };
 
 const filterIssueCards = (status) => {
+    // console.log(status)
     removeActive();
 
     let filteredIssues = [];
