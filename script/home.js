@@ -1,6 +1,6 @@
 let allIssues = [];
 
-const totalIssues = document.getElementById('total-issues');
+const totalIssues = document.getElementById("total-issues");
 const issuesContainer = document.getElementById("issues-container");
 
 const updateIssues = () => {
@@ -9,16 +9,14 @@ const updateIssues = () => {
 };
 
 const manageSpinner = (status) => {
-    if(status == true) {
-        document.getElementById('spinner').classList.remove('hidden');
-        document.getElementById('issues-container').classList.add('hidden');
-    }
-    else {
-        document.getElementById('issues-container').classList.remove('hidden');
-        document.getElementById('spinner').classList.add('hidden');
+    if (status == true) {
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("issues-container").classList.add("hidden");
+    } else {
+        document.getElementById("issues-container").classList.remove("hidden");
+        document.getElementById("spinner").classList.add("hidden");
     }
 };
-
 
 const getLabelIcon = (label) => {
     if (label === "bug") return "fa-solid fa-bug";
@@ -45,23 +43,26 @@ const createElements = (arr) => {
     return htmlElements.join(" ");
 };
 
-const formatDate = ((isoString) => {
+const formatDate = (isoString) => {
     const date = new Date(isoString);
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const year = date.getFullYear();
-    return `${month}/${day}/${year}`
-});
-
-const formatName = (name) => {
-    return name.split("_").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    return `${month}/${day}/${year}`;
 };
 
-const loadIssueDetail = async(id) => {
+const formatName = (name) => {
+    return name
+        .split("_")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+};
+
+const loadIssueDetail = async (id) => {
     const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
     const res = await fetch(url);
     const details = await res.json();
-    displayIssueDetail(details.data)
+    displayIssueDetail(details.data);
 };
 
 // {
@@ -81,34 +82,51 @@ const loadIssueDetail = async(id) => {
 // }
 
 const displayIssueDetail = (issue) => {
-    console.log(issue)
-    const detailsBox = document.getElementById('details-container');
+    console.log(issue);
+    const detailsBox = document.getElementById("details-container");
     detailsBox.innerHTML = `
         <h2 class="text-2xl font-bold">${issue.title}</h2>
-                    <div class="flex items-center gap-2">
-                        <div class="badge badge-success text-white">${issue.status}</div>
-                        <span class="w-1 h-1 bg-[#64748B] rounded-full inline-block"></span>
-                        <p class="text-[#64748B] ">Opened by ${formatName(issue.assignee ? formatName(issue.assignee) : 'None')}</p>
-                        <span class="w-1 h-1 bg-[#64748B] rounded-full inline-block"></span>
-                        <p class="text-[#64748B]">${formatDate(issue.createdAt)}</p>
-                    </div>
-                    <div class="flex gap-2 flex-wrap">
-                        ${createElements(issue.labels)}
-                    </div>
-                    <p class="text-[#64748B]">${issue.description}</p>
-                    <div class="flex gap-20 bg-base-200 p-5 rounded-md">
-                        <div>
-                            <p class="text-[#64748B] font-normal">Assignee:</p>
-                            <h3 class="text-[#1F2937] text-lg font-semibold">${formatName(issue.assignee) ? formatName(issue.assignee) : 'Not Assigned'}</h3>
-                        </div>
-                        <div>
-                            <p class="text-[#64748B] font-normal">Priority:</p>
-                            <span class="text-white badge ${issue.priority.toLowerCase() === 'high' ? 'badge-error' : issue.priority.toLowerCase() === 'medium' ? 'badge-warning' : 'badge-neutral'}">${issue.priority}</span>
-                        </div>
-                    </div>
+        <div class="flex items-center gap-2">
+            <div class="badge badge-success text-white">${issue.status}</div>
+            <span class="w-1 h-1 bg-[#64748B] rounded-full inline-block"></span>
+            <p class="text-[#64748B] ">Opened by 
+                ${formatName(issue.assignee 
+                    ? formatName(issue.assignee) 
+                    : "None")
+                }
+            </p>
+            <span class="w-1 h-1 bg-[#64748B] rounded-full inline-block"></span>
+            <p class="text-[#64748B]">${formatDate(issue.createdAt)}</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+            ${createElements(issue.labels)}
+        </div>
+        <p class="text-[#64748B]">${issue.description}</p>
+        <div class="flex gap-20 bg-base-200 p-5 rounded-md">
+            <div>
+                <p class="text-[#64748B] font-normal">Assignee:</p>
+                <h3 class="text-[#1F2937] text-lg font-semibold">
+                    ${formatName(issue.assignee) 
+                        ? formatName(issue.assignee) 
+                        : "Not Assigned"
+                    }
+                </h3>
+            </div>
+            <div>
+                <p class="text-[#64748B] font-normal">Priority:</p>
+                <span class="text-white badge 
+                ${issue.priority.toLowerCase() === "high" 
+                    ? "badge-error" 
+                    : issue.priority.toLowerCase() === "medium" 
+                    ? "badge-warning" 
+                    : "badge-neutral"}"
+                    >${issue.priority}
+                </span>
+            </div>
+        </div>
     
     `;
-    document.getElementById('issue_modal').showModal();
+    document.getElementById("issue_modal").showModal();
 };
 
 const displayIssues = (issues) => {
@@ -118,20 +136,31 @@ const displayIssues = (issues) => {
     issues.forEach((issue) => {
         // console.log(issue);
         const card = document.createElement("div");
-        card.className = `card bg-base-100 shadow-sm p-5 flex flex-col ${issue.status === 'open' ? 'border-t-4 border-green-500' : 'border-t-4 border-purple-500'}`;
+        card.className = `card bg-base-100 shadow-sm p-5 flex flex-col ${issue.status === "open" ? "border-t-4 border-green-500" : "border-t-4 border-purple-500"}`;
 
-    
         card.innerHTML = `
-        <div onclick='loadIssueDetail(${issue.id})'>
-            <div class="flex flex-col gap-4 flex-1 ">
+        <div onclick='loadIssueDetail(${issue.id})' class="flex flex-col h-full cursor-pointer">
+    
+            <div class="flex flex-col gap-4 flex-1">
                 <div class="flex justify-between items-center">
-                    ${issue.status === 'open' ? `<img src="assets/Open-Status.png" alt="Open Status">` : `<img src="assets/Closed-Status.png" alt="Close Status">`}
-                    <span class="badge ${issue.priority.toLowerCase() === 'high' ? 'badge-error' : issue.priority.toLowerCase() === 'medium' ? 'badge-warning' : 'badge-neutral'}">${issue.priority}</span>
+                    ${issue.status === "open"
+                        ? `<img src="assets/Open-Status.png" alt="Open Status">`
+                        : `<img src="assets/Closed-Status.png" alt="Close Status">`
+                    }
+                    <span class="badge ${issue.priority.toLowerCase() === "high"
+                        ? "badge-error"
+                        : issue.priority.toLowerCase() === "medium"
+                            ? "badge-warning"
+                            : "badge-neutral"
+                        }">${issue.priority}
+                    </span>
                 </div>
+
                 <div>
                     <h1 class="text-xl font-semibold text-[#1F2937]">${issue.title}</h1>
                     <p class="text-[#64748B] text-sm mt-1">${issue.description}</p>
                 </div>
+
                 <div class="flex gap-2 flex-wrap">
                     ${createElements(issue.labels)}
                 </div>
@@ -153,8 +182,8 @@ const displayIssues = (issues) => {
 };
 
 const removeActive = () => {
-    const controlButtons = document.querySelectorAll('.control-btn');
-    controlButtons.forEach(btn => btn.classList.remove('active'));
+    const controlButtons = document.querySelectorAll(".control-btn");
+    controlButtons.forEach((btn) => btn.classList.remove("active"));
 };
 
 const filterIssueCards = (status) => {
@@ -163,21 +192,21 @@ const filterIssueCards = (status) => {
     removeActive();
 
     let filteredIssues = [];
-    if(status === 'all') {
+    if (status === "all") {
         filteredIssues = allIssues;
-    } else if(status === 'open') {
-        filteredIssues = allIssues.filter(issue => issue.status === 'open')
-    } else if(status === 'closed') {
-        filteredIssues = allIssues.filter(issue => issue.status === 'closed')
+    } else if (status === "open") {
+        filteredIssues = allIssues.filter((issue) => issue.status === "open");
+    } else if (status === "closed") {
+        filteredIssues = allIssues.filter((issue) => issue.status === "closed");
     }
 
     setTimeout(() => {
         displayIssues(filteredIssues);
-        manageSpinner(false);  
+        manageSpinner(false);
     }, 300);
 
     displayIssues(filteredIssues);
-    document.getElementById(`${status}-btn`).classList.add('active');
+    document.getElementById(`${status}-btn`).classList.add("active");
 };
 
 const fetchIssues = async () => {
@@ -186,35 +215,45 @@ const fetchIssues = async () => {
         "https://phi-lab-server.vercel.app/api/v1/lab/issues",
     );
     const data = await response.json();
-    
+
     allIssues = data.data;
-    filterIssueCards('all');
+    filterIssueCards("all");
     // displayIssues(data.data);
-}; 
+};
 
 fetchIssues();
-document.getElementById("all-btn").addEventListener("click", () => filterIssueCards("all"));
-document.getElementById("open-btn").addEventListener("click", () => filterIssueCards("open"));
-document.getElementById("closed-btn").addEventListener("click", () => filterIssueCards("closed"));
+document
+    .getElementById("all-btn")
+    .addEventListener("click", () => filterIssueCards("all"));
+document
+    .getElementById("open-btn")
+    .addEventListener("click", () => filterIssueCards("open"));
+document
+    .getElementById("closed-btn")
+    .addEventListener("click", () => filterIssueCards("closed"));
 
-document.getElementById('btn-search').addEventListener('click', () => {
-    const input = document.getElementById('input-search');
+document.getElementById("btn-search").addEventListener("click", () => {
+    const input = document.getElementById("input-search");
     const searchValue = input.value.trim().toLowerCase();
     console.log(searchValue);
 
-    if(!searchValue){
-        alert('Search input is empty, showing all issues');
+    if (!searchValue) {
+        alert("Search input is empty, showing all issues");
         displayIssues(allIssues);
         return;
-    };
+    }
 
-    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
-    .then(res => res.json())
-    .then(data => {
-        const allIssues = data.data;
-        console.log(allIssues)
-        const filterIssues = allIssues.filter((issue) => issue.title.toLowerCase().includes(searchValue));       
-        displayIssues(filterIssues);
-        updateIssues();
-    });
+    fetch(
+        `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`,
+    )
+        .then((res) => res.json())
+        .then((data) => {
+            const allIssues = data.data;
+            console.log(allIssues);
+            const filterIssues = allIssues.filter((issue) =>
+                issue.title.toLowerCase().includes(searchValue),
+            );
+            displayIssues(filterIssues);
+            updateIssues();
+        });
 });
