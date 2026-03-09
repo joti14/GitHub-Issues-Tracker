@@ -149,7 +149,7 @@ const displayIssues = (issues) => {
         issuesContainer.append(card);
     });
     updateIssues();
-    manageSpinner(false);
+    // manageSpinner(false);
 };
 
 const removeActive = () => {
@@ -170,6 +170,11 @@ const filterIssueCards = (status) => {
     } else if(status === 'closed') {
         filteredIssues = allIssues.filter(issue => issue.status === 'closed')
     }
+
+    setTimeout(() => {
+        displayIssues(filteredIssues);
+        manageSpinner(false);  
+    }, 300);
 
     displayIssues(filteredIssues);
     document.getElementById(`${status}-btn`).classList.add('active');
