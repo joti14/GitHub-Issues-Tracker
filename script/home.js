@@ -200,10 +200,10 @@ const filterIssueCards = (status) => {
         filteredIssues = allIssues.filter((issue) => issue.status === "closed");
     }
 
-    setTimeout(() => {
-        displayIssues(filteredIssues);
-        manageSpinner(false);
-    }, 300);
+    
+    displayIssues(filteredIssues);
+    manageSpinner(false);
+    
 
     displayIssues(filteredIssues);
     document.getElementById(`${status}-btn`).classList.add("active");
@@ -236,6 +236,7 @@ document.getElementById("btn-search").addEventListener("click", () => {
     const input = document.getElementById("input-search");
     const searchValue = input.value.trim().toLowerCase();
     console.log(searchValue);
+    removeActive()
 
     if (!searchValue) {
         alert("Search input is empty, showing all issues");
@@ -255,5 +256,7 @@ document.getElementById("btn-search").addEventListener("click", () => {
             );
             displayIssues(filterIssues);
             updateIssues();
+            document.getElementById('all-btn').classList.add("active");
+            input.value = '';
         });
 });
